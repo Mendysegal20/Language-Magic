@@ -1,0 +1,2 @@
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Release\net6.0-windows\win-x64\publish\LanguageMagic.pdb
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Release\net6.0-windows\win-x64\publish\LanguageMagic.exe
