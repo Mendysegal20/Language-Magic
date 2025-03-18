@@ -69,8 +69,8 @@ class LanguageSwitcher
 
     class WindowPreference
     {
-        public string WindowId { get; set; }
-        public string Title { get; set; }
+        public string? WindowId { get; set; }
+        public string? Title { get; set; }
         public int LanguageId { get; set; }
     }
 
@@ -110,137 +110,66 @@ class LanguageSwitcher
         cts?.Cancel(); // מבטל את המשימה
     }
 
-    
+
     //
-    private void TrackLanguage(CancellationToken token)
+    private async Task TrackLanguage(CancellationToken token)
     {
+        Console.WriteLine("Tracking started...");
+
         while (!token.IsCancellationRequested)
         {
-            // כאן נכניס את הקוד שעוקב אחר השפה
-            MonitorLanguage();
-            Console.WriteLine("מעקב פעיל...");
-
-            Thread.Sleep(500); // מחכה חצי שנייה כדי לא להעמיס על המעבד
+            await MonitorLanguage(token);
+            await Task.Delay(500, token); // מחכה חצי שנייה בין בדיקות
         }
 
-        Console.WriteLine("המעקב הופסק.");
+        Console.WriteLine("Tracking stopped.");
     }
 
-
-    static void MonitorLanguage()
+    private async Task MonitorLanguage(CancellationToken token)
     {
-        while (running)
+        try
         {
-            try
+            GUITHREADINFO guiThreadInfo = new GUITHREADINFO
             {
-                // Get focused window
+                cbSize = Marshal.SizeOf(typeof(GUITHREADINFO))
+            };
 
-                // new struct of window with all details
-                GUITHREADINFO guiThreadInfo = new GUITHREADINFO();
-                
-                // returns the number of bytes of the struct in memory
-                guiThreadInfo.cbSize = Marshal.SizeOf(typeof(GUITHREADINFO));
+            if (GetGUIThreadInfo(0, ref guiThreadInfo))
+            {
+                IntPtr focusWindow = guiThreadInfo.hwndFocus;
+                IntPtr activeWindow = guiThreadInfo.hwndActive;
 
-                // 0 - allows us to get an information about the current thread
-                // if we found an active window, guiThreadInfo woud fill with all details
-                if (GetGUIThreadInfo(0, ref guiThreadInfo))
+                if (focusWindow != IntPtr.Zero)
                 {
-                    IntPtr focusWindow = guiThreadInfo.hwndFocus;
-                    IntPtr activeWindow = guiThreadInfo.hwndActive;
-
-                    if (focusWindow != IntPtr.Zero)
+                    string windowTitle = GetWindowTitle(activeWindow);
+                    if (string.IsNullOrEmpty(windowTitle))
                     {
-                        // Get window title
-                        string windowTitle = GetWindowTitle(activeWindow);
-                        if (string.IsNullOrEmpty(windowTitle))
+                        windowTitle = "Untitled Window";
+                    }
+
+                    string windowId = $"{windowTitle}_{activeWindow.ToInt64()}";
+
+                    uint threadId = GetWindowThreadProcessId(focusWindow, out _);
+                    if (threadId != 0)
+                    {
+                        IntPtr keyboardLayout = GetKeyboardLayout(threadId);
+                        int languageId = keyboardLayout.ToInt32() & 0xFFFF;
+
+                        if (windowId != currentWindowId)
                         {
-                            windowTitle = "Untitled Window";
-                        }
+                            Console.WriteLine($"Window changed to: {windowTitle} (ID: {windowId})");
+                            currentWindowId = windowId;
 
-                        // Create a unique window ID using both title and window handle value
-                        string windowId = $"{windowTitle}_{activeWindow.ToInt64()}";
-
-                        // Get keyboard layout
-                        uint threadId = GetWindowThreadProcessId(focusWindow, out _);
-                        if (threadId != 0)
-                        {
-                            IntPtr keyboardLayout = GetKeyboardLayout(threadId);
-                            int languageId = keyboardLayout.ToInt32() & 0xFFFF;
-
-                            // When we've moved to a new window
-                            if (windowId != currentWindowId)
+                            if (windowPreferences.TryGetValue(windowId, out WindowPreference? preference))
                             {
-                                Console.WriteLine($"Window changed to: {windowTitle} (ID: {windowId})");
-
-                                // Save current window
-                                currentWindowId = windowId;
-
-                                // If we have saved preferences for this window, switch to that language
-                                if (windowPreferences.TryGetValue(windowId, out WindowPreference preference))
+                                if (languageId != preference.LanguageId)
                                 {
-                                    if (languageId != preference.LanguageId)
-                                    {
-                                        // switch to the saved language
-                                        ChangeKeyboardLayout(activeWindow, threadId, (IntPtr)((preference.LanguageId & 0xFFFF) | (languageId & 0xFFFF0000)));
-                                        Console.WriteLine($"Changed language in window: {windowTitle} to: {GetLanguageName(preference.LanguageId)}");
-                                    }
+                                    ChangeKeyboardLayout(activeWindow, threadId, (IntPtr)((preference.LanguageId & 0xFFFF) | (languageId & 0xFFFF0000)));
+                                    Console.WriteLine($"Changed language in window: {windowTitle} to: {GetLanguageName(preference.LanguageId)}");
                                 }
-                                // V2 - no default language
-                                else
-                                {
-                                    // Switch to Hebrew
-                                    windowPreferences[windowId] = new WindowPreference
-                                    {
-                                        WindowId = windowId,
-                                        Title = windowTitle,
-                                        LanguageId = languageId // שומר את השפה הנוכחית של החלון במקום לשנות אותה
-                                    };
-
-                                    Console.WriteLine($"New window detected: {windowTitle}, keeping current language: {GetLanguageName(languageId)}");
-
-                                    // עדכון מזהה השפה הנוכחי
-                                    currentLanguageId = languageId;
-                                }
-                                //// If this is a new window, set default to Hebrew
-                                //// V1 - default language as hebrew
-                                //else
-                                //{
-                                //    // Switch to Hebrew
-                                //    if (languageId != HEBREW_LANGUAGE_ID)
-                                //    {
-                                //        ChangeKeyboardLayout(activeWindow, threadId, (IntPtr)((HEBREW_LANGUAGE_ID & 0xFFFF) | (languageId & 0xFFFF0000)));
-                                //        Console.WriteLine($"New window detected: {windowTitle}, setting default language to Hebrew");
-
-                                //        // Save this preference
-                                //        windowPreferences[windowId] = new WindowPreference
-                                //        {
-                                //            WindowId = windowId,
-                                //            Title = windowTitle,
-                                //            LanguageId = HEBREW_LANGUAGE_ID
-                                //        };
-
-                                //        // Update current language ID
-                                //        currentLanguageId = HEBREW_LANGUAGE_ID;
-                                //    }
-                                //    else
-                                //    {
-                                //        // Window is already in Hebrew, just save the preference
-                                //        windowPreferences[windowId] = new WindowPreference
-                                //        {
-                                //            WindowId = windowId,
-                                //            Title = windowTitle,
-                                //            LanguageId = HEBREW_LANGUAGE_ID
-                                //        };
-                                //        currentLanguageId = HEBREW_LANGUAGE_ID;
-                                //    }
-
-                                //}
-
                             }
-                            // If language changed in the current window, save the new preference
-                            else if (languageId != currentLanguageId)
+                            else
                             {
-                                currentLanguageId = languageId;
                                 windowPreferences[windowId] = new WindowPreference
                                 {
                                     WindowId = windowId,
@@ -248,20 +177,31 @@ class LanguageSwitcher
                                     LanguageId = languageId
                                 };
 
-                                Console.WriteLine($"Saved new language preference for window: {windowTitle}, language: {GetLanguageName(languageId)}");
+                                Console.WriteLine($"New window detected: {windowTitle}, keeping current language: {GetLanguageName(languageId)}");
+                                currentLanguageId = languageId;
                             }
-
-                            currentLanguageId = languageId;
                         }
+                        else if (languageId != currentLanguageId)
+                        {
+                            currentLanguageId = languageId;
+                            windowPreferences[windowId] = new WindowPreference
+                            {
+                                WindowId = windowId,
+                                Title = windowTitle,
+                                LanguageId = languageId
+                            };
+
+                            Console.WriteLine($"Saved new language preference for window: {windowTitle}, language: {GetLanguageName(languageId)}");
+                        }
+
+                        currentLanguageId = languageId;
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-
-            Thread.Sleep(500);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
         }
     }
 

@@ -1,0 +1,5 @@
+C:\Users\mendy\OneDrive\שולחן העבודה\בדיקת גרסה\LanguageMagic.exe
+C:\Users\mendy\OneDrive\שולחן העבודה\בדיקת גרסה\LanguageMagic.dll
+C:\Users\mendy\OneDrive\שולחן העבודה\בדיקת גרסה\LanguageMagic.deps.json
+C:\Users\mendy\OneDrive\שולחן העבודה\בדיקת גרסה\LanguageMagic.runtimeconfig.json
+C:\Users\mendy\OneDrive\שולחן העבודה\בדיקת גרסה\LanguageMagic.pdb

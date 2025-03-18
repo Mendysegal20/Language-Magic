@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Activate" HorizontalAlignment="Left" VerticalAlignment="Top" Height="48" Width="108" Margin="440,227,0,0" Background="#FFA4E375" Foreground="Black" Click="Button_Click"/>
+        <Button x:Name="ActivateBtn" Content="Activate" HorizontalAlignment="Left" VerticalAlignment="Top" Height="48" Width="108" Margin="440,227,0,0" Background="#FFA4E375" Foreground="Black" Click="Button_Click"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,36,0,0" TextWrapping="Wrap" Text="Language Window Magic" VerticalAlignment="Top" Height="40" Width="295" RenderTransformOrigin="0.499,0.578" FontSize="26" FontFamily="Nirmala UI"/>
         <TextBlock HorizontalAlignment="Center" Margin="0,96,0,0" TextWrapping="Wrap" Text="Control your preferred language for each window" VerticalAlignment="Top" Height="24" Width="352" FontSize="16"/>
         <Button x:Name="ExitBtn" Content="Exit" HorizontalAlignment="Left" Margin="252,227,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.766,-2.186" Height="48" Width="108" Click="Button_Click_1" Background="#FFF16969" Foreground="Black"/>

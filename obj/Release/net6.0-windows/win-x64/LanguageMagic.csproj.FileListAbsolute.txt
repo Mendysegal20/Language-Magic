@@ -519,3 +519,4 @@ C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Release\net6.0-windo
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Release\net6.0-windows\win-x64\LanguageMagic.pdb
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Release\net6.0-windows\win-x64\LanguageMagic.genruntimeconfig.cache
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Release\net6.0-windows\win-x64\ref\LanguageMagic.dll
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Release\net6.0-windows\win-x64\LanguageMagic.csproj.ResolveComReference.cache
