@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8NGh19de3/GrmZVJ6wWA9+4GSfIyV6QZNcNVFE/dhU+N7nhWtg6ajqdWx3m1shEnGErf1bleViiGH3gkpRkYAQ==",
+  "dgSpecHash": "GvpigvZ8G2SUYCeFQGlCurNvKzR5+MbrbFGTDUH9p9EttIgQ+kNhcVg5WA+dgE7AIzD6qdIzs25bXLVdBjmjkQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mendy\\source\\repos\\LanguageMagic\\LanguageMagic\\LanguageMagic.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\mendy\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\6.0.9\\microsoft.netcore.app.runtime.win-x64.6.0.9.nupkg.sha512",
-    "C:\\Users\\mendy\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\6.0.9\\microsoft.windowsdesktop.app.runtime.win-x64.6.0.9.nupkg.sha512",
-    "C:\\Users\\mendy\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\6.0.9\\microsoft.aspnetcore.app.runtime.win-x64.6.0.9.nupkg.sha512",
-    "C:\\Users\\mendy\\.nuget\\packages\\microsoft.netcore.app.crossgen2.win-x64\\6.0.9\\microsoft.netcore.app.crossgen2.win-x64.6.0.9.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

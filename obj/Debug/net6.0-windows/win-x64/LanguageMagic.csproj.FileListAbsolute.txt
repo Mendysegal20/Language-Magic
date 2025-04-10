@@ -1,3 +1,10 @@
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\mscordbi.dll
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\LanguageMagic.csproj.AssemblyReference.cache
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\LanguageMagic.csproj.ResolveComReference.cache
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\MainWindow.g.cs
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\App.g.cs
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\LanguageMagic_MarkupCompile.cache
+C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\LanguageMagic_MarkupCompile.lref
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\LanguageMagic.exe
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\LanguageMagic.deps.json
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\LanguageMagic.runtimeconfig.json
@@ -272,7 +279,6 @@ C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\hostpolicy.dll
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\mscordaccore.dll
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\mscordaccore_amd64_amd64_6.0.922.41905.dll
-C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\mscordbi.dll
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\mscorrc.dll
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\msquic.dll
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\ucrtbase.dll
@@ -502,11 +508,6 @@ C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\zh-Hant\UIAutomationTypes.resources.dll
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\zh-Hant\WindowsBase.resources.dll
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\bin\Debug\net6.0-windows\win-x64\zh-Hant\WindowsFormsIntegration.resources.dll
-C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\LanguageMagic.csproj.AssemblyReference.cache
-C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\MainWindow.g.cs
-C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\App.g.cs
-C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\LanguageMagic_MarkupCompile.cache
-C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\LanguageMagic_MarkupCompile.lref
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\MainWindow.baml
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\LanguageMagic.g.resources
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows\win-x64\LanguageMagic.GeneratedMSBuildEditorConfig.editorconfig

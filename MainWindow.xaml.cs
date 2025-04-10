@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Drawing;
 using Microsoft.Win32;
+using System.Windows.Media;
 
 namespace LanguageMagic
 {
@@ -13,6 +14,10 @@ namespace LanguageMagic
         private NotifyIcon trayIcon;
         private const string appName = "LanguageMagic";
         private readonly string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+
+        private readonly SolidColorBrush activeBrush = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#23d937"));
+        private readonly SolidColorBrush inactiveBrush = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#808080"));
+
 
         public MainWindow()
         {
@@ -37,7 +42,8 @@ namespace LanguageMagic
                     switcher = new LanguageSwitcher();
 
                 switcher.Start();
-                ActivateBtn.Content = "Deactivate";
+                ActivateBtn.Background = activeBrush;
+                StatusText.Text = "Active";
             }
 
             // אם הופעלה עם פרמטר /autostart, מסתירים את החלון
@@ -82,23 +88,22 @@ namespace LanguageMagic
                 }
                 isRunning = true;
                 switcher.Start();
-                ActivateBtn.Content = "Deactivate";
+                ActivateBtn.Background = activeBrush;
+                if (StatusText != null) StatusText.Text = "Active";
+                    
             }
             else
             {
                 switcher?.Stop();
                 isRunning = false;
-                ActivateBtn.Content = "Activate";
+                ActivateBtn.Background = inactiveBrush;
+                if (StatusText != null) StatusText.Text = "Inactive";
             }
 
             // כאן אנחנו גם שומרים את המצב וגם משנים את האתחול
             SaveSettings();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            ExitApplication();
-        }
 
         // פונקציה חדשה שרק שומרת את מצב ההפעלה
         private void SaveActivationState()

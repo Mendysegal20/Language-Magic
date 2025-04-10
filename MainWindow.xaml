@@ -5,12 +5,89 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LanguageMagic"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button x:Name="ActivateBtn" Content="Activate" HorizontalAlignment="Left" VerticalAlignment="Top" Height="48" Width="108" Margin="440,227,0,0" Background="#FFA4E375" Foreground="Black" Click="Button_Click"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0,36,0,0" TextWrapping="Wrap" Text="Language Window Magic" VerticalAlignment="Top" Height="40" Width="295" RenderTransformOrigin="0.499,0.578" FontSize="26" FontFamily="Nirmala UI"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0,96,0,0" TextWrapping="Wrap" Text="Control your preferred language for each window" VerticalAlignment="Top" Height="24" Width="352" FontSize="16"/>
-        <Button x:Name="ExitBtn" Content="Exit" HorizontalAlignment="Left" Margin="252,227,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.766,-2.186" Height="48" Width="108" Click="Button_Click_1" Background="#FFF16969" Foreground="Black"/>
+        Title="Language Window Magic" Height="500" Width="800"
+        Background="#F5F5F5">
+    <Window.Resources>
+        <!-- Style for the circular power button -->
+        <Style x:Key="CircularPowerButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <!-- Button body -->
+                            <Ellipse x:Name="buttonBody" Fill="{TemplateBinding Background}" 
+                                     Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"/>
 
+                            <!-- Power icon -->
+                            <Path x:Name="powerIcon" Data="M15,3 L15,12 M8,12 C8,8.13401 11.134,5 15,5 C18.866,5 22,8.13401 22,12 C22,15.866 18.866,19 15,19 C11.134,19 8,15.866 8,12 Z"
+                                  Stroke="White" StrokeThickness="2" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                                  RenderTransformOrigin="0.5,0.5" Margin="31,38,0,0">
+                                <Path.RenderTransform>
+                                    <ScaleTransform ScaleX="3" ScaleY="3"/>
+                                </Path.RenderTransform>
+                            </Path>
+
+                            <!-- Content -->
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover effect -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Opacity" Value="0.9"/>
+                            </Trigger>
+
+                            <!-- Press effect -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <!-- Title -->
+            <TextBlock Text="Language Window Magic" 
+                       FontSize="36" FontWeight="Bold" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,20"/>
+
+            <!-- Subtitle -->
+            <TextBlock Text="Control your preferred language for each window" 
+                       FontSize="18" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,60" 
+                       Foreground="#555555"/>
+            <Button x:Name="ActivateBtn" 
+                    Width="106" Height="107" 
+                    Background="#A9A9B0" 
+                    Style="{StaticResource CircularPowerButtonStyle}"
+                    Click="Button_Click"/>
+
+            <!-- Power Button -->
+
+            <!-- Status Text -->
+            <TextBlock x:Name="StatusText"
+                       Text="Inactive" 
+                       FontSize="22" 
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center" 
+                       Margin="0,30,0,0"/>
+        </StackPanel>
     </Grid>
 </Window>

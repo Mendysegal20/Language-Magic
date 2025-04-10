@@ -15,6 +15,7 @@
 	<PublishReadyToRun>true</PublishReadyToRun>
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
 	<EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+	<StartupObject></StartupObject>
 	
 
   </PropertyGroup>
