@@ -51,10 +51,6 @@ class LanguageSwitcher
 
     [DllImport("user32.dll")]
     private static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetParent(IntPtr hWnd);
-
     private const uint WM_INPUTLANGCHANGEREQUEST = 0x0050;
     private const int INPUTLANGCHANGE_FORWARD = 0x0002;
     #endregion
@@ -89,16 +85,6 @@ class LanguageSwitcher
         CancellationToken token = cts.Token;
 
         trackingTask = Task.Run(() => TrackLanguage(token), token);
-        //
-
-        //Console.CancelKeyPress += (sender, e) => {
-        //    Console.WriteLine("Exiting...");
-        //    running = false;
-        //    e.Cancel = true;
-        //};
-
-        //// Start monitoring loop
-        //MonitorLanguage();
     }
 
     public void Stop()
@@ -110,22 +96,20 @@ class LanguageSwitcher
         cts?.Cancel(); // מבטל את המשימה
     }
 
-
-    //
     private async Task TrackLanguage(CancellationToken token)
     {
         Console.WriteLine("Tracking started...");
 
         while (!token.IsCancellationRequested)
         {
-            await MonitorLanguage(token);
+            MonitorLanguage(token);
             await Task.Delay(500, token); // מחכה חצי שנייה בין בדיקות
         }
 
         Console.WriteLine("Tracking stopped.");
     }
 
-    private async Task MonitorLanguage(CancellationToken token)
+    private void MonitorLanguage(CancellationToken token)
     {
         try
         {

@@ -1,23 +1,33 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using System.Drawing;
-using Microsoft.Win32;
+using System.Text.Json;
 using System.Windows.Media;
 
 namespace LanguageMagic
 {
+    public class AppSettings
+    {
+        public bool IsActivated { get; set; } = false;
+    }
+
     public partial class MainWindow : Window
     {
         private LanguageSwitcher? switcher = null;
         private bool isRunning = false;
         private NotifyIcon trayIcon;
-        private const string appName = "LanguageMagic";
-        private readonly string exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 
-        private readonly SolidColorBrush activeBrush = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#23d937"));
-        private readonly SolidColorBrush inactiveBrush = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#808080"));
+        private readonly SolidColorBrush activeBrush =
+            new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#23d937"));
+        private readonly SolidColorBrush inactiveBrush =
+            new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#808080"));
 
+        private readonly string configFilePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "LanguageMagic", "config.json"
+        );
 
         public MainWindow()
         {
@@ -35,7 +45,6 @@ namespace LanguageMagic
 
             trayIcon.Click += (s, e) => ShowWindow();
 
-            // אם התוכנית הופעלה מחדש כשהיא הייתה מופעלת קודם, נוודא שהיא מתחילה לפעול
             if (isRunning)
             {
                 if (switcher == null)
@@ -46,7 +55,6 @@ namespace LanguageMagic
                 StatusText.Text = "Active";
             }
 
-            // אם הופעלה עם פרמטר /autostart, מסתירים את החלון
             string[] args = Environment.GetCommandLineArgs();
             if (args.Length > 1 && args[1] == "/autostart")
             {
@@ -64,8 +72,7 @@ namespace LanguageMagic
         private void ExitApplication()
         {
             switcher?.Stop();
-            // רק שומר את מצב ההפעלה, לא משנה את מצב האתחול
-            SaveActivationState();
+            SaveSettings();
 
             isRunning = false;
             trayIcon.Visible = false;
@@ -90,7 +97,6 @@ namespace LanguageMagic
                 switcher.Start();
                 ActivateBtn.Background = activeBrush;
                 if (StatusText != null) StatusText.Text = "Active";
-                    
             }
             else
             {
@@ -100,76 +106,43 @@ namespace LanguageMagic
                 if (StatusText != null) StatusText.Text = "Inactive";
             }
 
-            // כאן אנחנו גם שומרים את המצב וגם משנים את האתחול
             SaveSettings();
         }
 
-
-        // פונקציה חדשה שרק שומרת את מצב ההפעלה
-        private void SaveActivationState()
-        {
-            try
-            {
-                using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\LanguageMagic"))
-                {
-                    key.SetValue("IsActivated", isRunning ? 1 : 0);
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show("Error saving activation state: " + ex.Message);
-            }
-        }
-
-        // שמירת הגדרת ההפעלה ברג'יסטרי וגם שינוי מצב האתחול
-        private void SaveSettings()
-        {
-            try
-            {
-                // שמירת מצב ההפעלה ברג'יסטרי
-                SaveActivationState();
-
-                // הוספה או הסרה מרשימת האתחול בהתאם למצב ההפעלה
-                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
-                {
-                    if (isRunning)
-                    {
-                        // הוספה לרשימת האתחול עם פרמטר /autostart
-                        key.SetValue(appName, $"\"{exePath}\" /autostart");
-                    }
-                    else
-                    {
-                        // הסרה מרשימת האתחול
-                        if (key.GetValue(appName) != null)
-                            key.DeleteValue(appName);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show("Error saving settings: " + ex.Message);
-            }
-        }
-
-        // טעינת ההגדרות מהרשומות
         private void LoadSettings()
         {
             try
             {
-                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\LanguageMagic"))
+                if (File.Exists(configFilePath))
                 {
-                    if (key != null)
-                    {
-                        
-                        int value = (int)key.GetValue("IsActivated", 0);
-                        System.Diagnostics.Debug.WriteLine("the value of activation is: " + value);
-                        isRunning = value == 1;
-                    }
+                    string json = File.ReadAllText(configFilePath);
+                    var settings = JsonSerializer.Deserialize<AppSettings>(json);
+                    isRunning = settings?.IsActivated ?? false;
+                    System.Diagnostics.Debug.WriteLine("Loaded activation state: " + isRunning);
                 }
             }
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show("Error loading settings: " + ex.Message);
+            }
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                var settings = new AppSettings { IsActivated = isRunning };
+                string json = JsonSerializer.Serialize(settings);
+
+                string folder = Path.GetDirectoryName(configFilePath);
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                File.WriteAllText(configFilePath, json);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Error saving settings: " + ex.Message);
             }
         }
     }

@@ -8,12 +8,12 @@ C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\obj\Debug\net6.0-windows
 LanguageMagic
 none
 false
-TRACE;DEBUG;NET;NET6_0;NETCOREAPP
+TRACE;DEBUG;NET;NET6_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\mendy\source\repos\LanguageMagic\LanguageMagic\App.xaml
 11407045341
 
 6-1425699974
-203352550356
+203155564505
 MainWindow.xaml;
 
 False
